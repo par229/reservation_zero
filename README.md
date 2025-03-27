@@ -42,12 +42,12 @@
 8. 질문입력 -> 출석자 채팅 기능 활성화
 9. 알림 -> '출석 10분전 입니다'
 ---------------------------------------------------------------------------
-실행방법
+# 실행방법
 1단 깃클론해서 받아
-2 Node.js 설치 제일 최신중 lts인거
-3 npm install -g expo-cli 실행
-4 studynest로 이동
-5 npx expo start --clear 실행
+2. Node.js 설치 제일 최신중 lts인거
+3. npm install -g expo-cli 실행
+4. studynest로 이동
+5. npx expo start --clear 실행
 ---------------------------------------------------------------------------
 ## UI 흐름도
 ![ReservationZeroton UI 흐름도](images/reservation-zeroton-improved-flow.svg)
