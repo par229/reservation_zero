@@ -43,4 +43,4 @@
 9. 알림 -> '출석 10분전 입니다'
 ---------------------------------------------------------------------------
 ## UI 흐름도
-![ReservationZeroton UI 흐름도](images/reservation-zeroton-flow.svg)
+![ReservationZeroton UI 흐름도](images/reservation-zeroton-improved-flow.svg)
