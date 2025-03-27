@@ -79,7 +79,7 @@ studynest/
 └── context/               # React Context API
 ```
 
-## 폴더별 파일 구조 (권장 사항)
+## 폴더별 파일 구조 (권장 사항) AI의 명령
 
 ### services/ 폴더
 백엔드 API 통신 관련 로직을 포함합니다.
