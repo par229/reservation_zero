@@ -162,4 +162,4 @@ context/
 - **assets/**: 정적 자원 (폰트, 이미지 등)
 
 ## UI 흐름도
-![ReservationZeroton UI 흐름도](images/reservation-zeroton-flow.svg)
+![ReservationZeroton UI 흐름도](images/reservation-zeroton-improved-flow.svg)
