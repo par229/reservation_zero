@@ -45,79 +45,108 @@
 ## UI 흐름도
 ![ReservationZeroton UI 흐름도](images/reservation-zeroton-improved-flow.svg)
 
+# StudyNest Project Structure
 
+## Directory Structure
+
+```
 studynest/
-├── app/
-│   ├── (tabs)/
-│   │   ├── *layout.tsx
-│   │   ├── index.tsx
-│   │   ├── attendance.tsx
-│   │   ├── question.tsx
-│   │   ├── profile.tsx
-│   │   └── admin-dashboard.tsx
-│   ├── *layout.tsx
-│   ├── index.tsx
-│   ├── login.tsx
-│   ├── register.tsx
-│   ├── forgot-password.tsx
-│   └── +not-found.tsx
-├── assets/
-│   ├── fonts/
-│   └── images/
-├── components/
-├── constants/
-├── hooks/
-├── services/        # 백엔드 API 서비스
-├── store/           # 상태 관리
-├── types/           # 타입 정의
-├── utils/           # 유틸리티 함수
-├── config/          # 환경설정
-└── context/         # React Context
+├── app/                    # 애플리케이션 라우팅 및 페이지
+│   ├── (tabs)/            # 탭 네비게이션
+│   │   ├── layout.tsx     # 탭 레이아웃
+│   │   ├── index.tsx      # 홈 화면
+│   │   ├── attendance.tsx # 출석 관리 화면
+│   │   ├── question.tsx   # 질문 화면
+│   │   ├── profile.tsx    # 프로필 화면
+│   │   └── admin-dashboard.tsx # 관리자 대시보드
+│   ├── layout.tsx         # 앱 전체 레이아웃
+│   ├── index.tsx          # 앱 진입점
+│   ├── login.tsx          # 로그인 화면
+│   ├── register.tsx       # 회원가입 화면
+│   ├── forgot-password.tsx # 비밀번호 찾기 화면
+│   └── not-found.tsx      # 404 페이지
+├── assets/                # 정적 자원
+│   ├── fonts/             # 폰트 파일
+│   └── images/            # 이미지 파일
+├── components/            # 재사용 가능한 UI 컴포넌트
+├── constants/             # 상수 정의
+├── hooks/                 # 커스텀 React 훅
+├── services/              # 백엔드 API 통신 로직
+├── store/                 # 상태 관리
+├── types/                 # TypeScript 타입 정의
+├── utils/                 # 유틸리티 함수
+├── config/                # 환경 설정
+└── context/               # React Context API
+```
 
+## 폴더별 파일 구조 (권장 사항)
 
-AI 추천 방식
+### services/ 폴더
+백엔드 API 통신 관련 로직을 포함합니다.
 
-services/ 폴더: API 호출 등 백엔드 통신 관련 로직
+```
+services/
+├── api.ts                 # API 클라이언트 설정 (axios 등)
+├── auth.service.ts        # 인증 관련 API
+├── reservation.service.ts # 좌석 예약 관련 API
+├── attendance.service.ts  # 출석 관련 API
+└── question.service.ts    # 질문 관련 API
+```
 
-api.ts: API 클라이언트 설정 (axios 등)
-auth.service.ts: 인증 관련 API
-reservation.service.ts: 좌석 예약 관련 API
-attendance.service.ts: 출석 관련 API
-question.service.ts: 질문 관련 API
+### store/ 폴더
+상태 관리 (Redux, Zustand 등)를 위한 파일들을 포함합니다.
 
+```
+store/
+├── auth/                  # 인증 상태 관리
+├── reservation/           # 예약 상태 관리
+├── attendance/            # 출석 상태 관리
+└── question/              # 질문 상태 관리
+```
 
-store/ 폴더: 상태 관리 (Redux, Zustand 등)
+### types/ 폴더
+TypeScript 타입 정의를 포함합니다.
 
-auth/: 인증 상태 관리
-reservation/: 예약 상태 관리
-attendance/: 출석 상태 관리
-question/: 질문 상태 관리
+```
+types/
+├── api.types.ts           # API 응답 타입
+├── user.types.ts          # 사용자 관련 타입
+├── reservation.types.ts   # 예약 관련 타입
+├── attendance.types.ts    # 출석 관련 타입
+└── question.types.ts      # 질문 관련 타입
+```
 
+### utils/ 폴더
+유틸리티 함수를 포함합니다.
 
-types/ 폴더: 타입 정의
+```
+utils/
+├── axios-interceptor.ts   # API 요청/응답 처리
+├── storage.ts             # 로컬 스토리지 관리
+├── format.ts              # 데이터 포맷팅
+└── validation.ts          # 데이터 유효성 검사
+```
 
-api.types.ts: API 응답 타입
-user.types.ts: 사용자 관련 타입
-reservation.types.ts: 예약 관련 타입
-attendance.types.ts: 출석 관련 타입
-question.types.ts: 질문 관련 타입
+### config/ 폴더
+환경 설정 관련 파일을 포함합니다.
 
+```
+config/
+├── env.ts                 # 환경 변수 설정
+└── api.config.ts          # API 엔드포인트 설정
+```
 
-utils/ 폴더: 유틸리티 함수
+### context/ 폴더
+React Context API 사용 시 필요한 파일을 포함합니다.
 
-axios-interceptor.ts: API 요청/응답 처리
-storage.ts: 로컬 스토리지 관리
-format.ts: 데이터 포맷팅
-validation.ts: 데이터 유효성 검사
+```
+context/
+├── AuthContext.tsx        # 인증 컨텍스트
+└── ReservationContext.tsx # 예약 컨텍스트
+```
 
-
-config/ 폴더: 환경 설정
-
-env.ts: 환경 변수 설정
-api.config.ts: API 엔드포인트 설정
-
-
-context/ 폴더: React Context API 사용시
-
-AuthContext.tsx: 인증 컨텍스트
-ReservationContext.tsx: 예약 컨텍스트
+## 기타 폴더
+- **components/**: 재사용 가능한 UI 컴포넌트
+- **constants/**: 상수 정의
+- **hooks/**: 커스텀 React 훅
+- **assets/**: 정적 자원 (폰트, 이미지 등)
