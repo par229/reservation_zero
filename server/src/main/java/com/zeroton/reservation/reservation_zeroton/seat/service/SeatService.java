@@ -37,6 +37,6 @@ public class SeatService {
 
         boolean isAlreadyReserved = seatReservationRepository.isReserved(
                 seatId, now, now
-        )
+        );
     }
 }

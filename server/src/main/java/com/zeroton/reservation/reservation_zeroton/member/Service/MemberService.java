@@ -2,14 +2,19 @@ package com.zeroton.reservation.reservation_zeroton.member.Service;
 
 import java.io.IOException;
 
+import com.zeroton.reservation.reservation_zeroton.deletemember.repository.DeleteMemberRepository;
+import com.zeroton.reservation.reservation_zeroton.deletemember.domain.DeleteMember;
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
 import com.zeroton.reservation.reservation_zeroton.member.dto.ChangePasswordForm;
 import com.zeroton.reservation.reservation_zeroton.member.dto.DeleteForm;
 import com.zeroton.reservation.reservation_zeroton.member.dto.ValidatedPasswordForm;
 import com.zeroton.reservation.reservation_zeroton.member.Model.Member;
 import com.zeroton.reservation.reservation_zeroton.errors.NotFoundException;
-import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
+import com.zeroton.reservation.reservation_zeroton.email.service.AuthService;
+import com.zeroton.reservation.reservation_zeroton.email.util.RedisUtil;
+
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -4,6 +4,7 @@ package com.zeroton.reservation.reservation_zeroton.member.security;
 import com.zeroton.reservation.reservation_zeroton.member.Model.Member;
 import com.zeroton.reservation.reservation_zeroton.member.Model.MemberRole;
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
+import com.zeroton.reservation.reservation_zeroton.errors.NotFoundException;
 
 
 import jakarta.servlet.http.HttpServletRequest;
