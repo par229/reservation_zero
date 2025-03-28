@@ -5,7 +5,7 @@ import com.zeroton.reservation.reservation_zeroton.classroom.service.ClassRoomSe
 import com.zeroton.reservation.reservation_zeroton.classseat.domain.ClassSeat;
 import com.zeroton.reservation.reservation_zeroton.email.service.AuthService;
 import com.zeroton.reservation.reservation_zeroton.errors.NotFoundException;
-import com.zeroton.reservation.reservation_zeroton.member.model.Member;
+import com.zeroton.reservation.reservation_zeroton.member.Model.Member;
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
 import com.zeroton.reservation.reservation_zeroton.reservation.dto.FindReservationDTO;
 import com.zeroton.reservation.reservation_zeroton.reservation.dto.ReservationDTO;
@@ -15,7 +15,7 @@ import com.zeroton.reservation.reservation_zeroton.utils.ApiUtils.ApiResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import static com.zeroton.reservation.reservation_zeroton.utils.ApiUtils.success;
 
 @RestController

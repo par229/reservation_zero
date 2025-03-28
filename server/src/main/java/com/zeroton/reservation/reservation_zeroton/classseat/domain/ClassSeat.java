@@ -1,11 +1,11 @@
 package com.zeroton.reservation.reservation_zeroton.classseat.domain;
 
-import com.knu.cse.base.BaseEntity;
-import com.knu.cse.classroom.domain.ClassRoom;
-import com.knu.cse.reservation.domain.Reservation;
+import com.zeroton.reservation.reservation_zeroton.base.BaseEntity;
+import com.zeroton.reservation.reservation_zeroton.classroom.domain.ClassRoom;
+import com.zeroton.reservation.reservation_zeroton.reservation.domain.Reservation;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

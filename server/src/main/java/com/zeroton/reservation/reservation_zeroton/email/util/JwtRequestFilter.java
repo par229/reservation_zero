@@ -1,6 +1,6 @@
 package com.zeroton.reservation.reservation_zeroton.email.util;
 
-import com.zeroton.reservation.reservation_zeroton.email.service.MemberDetailsService;
+import com.zeroton.reservation.reservation_zeroton.email.service.MemberDetailService;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import jakarta.servlet.FilterChain;
@@ -22,7 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final MemberDetailsService memberDetailsService;
+    private final MemberDetailService memberDetailsService;
 
     private final JwtUtil jwtUtil;
 

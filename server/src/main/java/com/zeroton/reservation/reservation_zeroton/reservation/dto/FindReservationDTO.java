@@ -3,6 +3,8 @@ package com.zeroton.reservation.reservation_zeroton.reservation.dto;
 import com.zeroton.reservation.reservation_zeroton.classroom.domain.Building;
 import com.zeroton.reservation.reservation_zeroton.classseat.domain.ClassSeat;
 import java.time.LocalDateTime;
+
+import com.zeroton.reservation.reservation_zeroton.reservation.domain.Reservation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

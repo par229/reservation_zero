@@ -4,9 +4,9 @@ import com.zeroton.reservation.reservation_zeroton.classseat.domain.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
