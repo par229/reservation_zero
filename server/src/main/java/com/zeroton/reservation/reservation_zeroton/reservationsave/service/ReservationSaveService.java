@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -20,8 +21,11 @@ public class ReservationSaveService {
     private final ReservationSaveRepository reservationSaveRepository;
 
     @Transactional(readOnly = true)
-    public List<ReservationSave> search(HashMap<String, String> paramMap){
-        return (List<ReservationSave>) reservationSaveRepository.findAll(ReservationSavePredicate.search(paramMap), Sort.by("startTime").descending());
+    public List<ReservationSave> search(Map<String, String> paramMap) {
+        return reservationSaveRepository.findAll(
+                ReservationSavePredicate.search(paramMap),
+                Sort.by(Sort.Direction.DESC, "startTime")
+        );
     }
 
     @Transactional(readOnly = true)

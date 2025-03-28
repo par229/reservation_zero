@@ -8,7 +8,7 @@ import com.zeroton.reservation.reservation_zeroton.classseat.domain.Status;
 import com.zeroton.reservation.reservation_zeroton.classseat.repository.ClassSeatRepository;
 import com.zeroton.reservation.reservation_zeroton.email.util.RedisUtil;
 import com.zeroton.reservation.reservation_zeroton.errors.NotFoundException;
-import com.zeroton.reservation.reservation_zeroton.member.model.Member;
+import com.zeroton.reservation.reservation_zeroton.member.Model.Member;
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
 import com.zeroton.reservation.reservation_zeroton.reservation.dto.FindReservationDTO;
 import com.zeroton.reservation.reservation_zeroton.reservation.domain.Reservation;

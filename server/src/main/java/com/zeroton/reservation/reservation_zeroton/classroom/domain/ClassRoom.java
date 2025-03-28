@@ -3,7 +3,7 @@ package com.zeroton.reservation.reservation_zeroton.classroom.domain;
 import com.zeroton.reservation.reservation_zeroton.classseat.domain.ClassSeat;
 import com.zeroton.reservation.reservation_zeroton.reservation.domain.Reservation;
 import lombok.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

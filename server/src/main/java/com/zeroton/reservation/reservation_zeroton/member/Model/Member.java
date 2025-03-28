@@ -5,6 +5,8 @@ import com.zeroton.reservation.reservation_zeroton.base.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.zeroton.reservation.reservation_zeroton.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
