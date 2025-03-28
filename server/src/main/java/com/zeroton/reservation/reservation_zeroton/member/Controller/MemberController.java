@@ -9,7 +9,7 @@ import com.zeroton.reservation.reservation_zeroton.member.model.Member;
 import com.zeroton.reservation.reservation_zeroton.email.service.AuthService;
 
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
-import com.zeroton.reservation.reservation_zeroton.member.service.MemberService;
+import com.zeroton.reservation.reservation_zeroton.member.Service.MemberService;
 import com.zeroton.reservation.reservation_zeroton.utils.ApiUtils.ApiResult;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.Cookie;
