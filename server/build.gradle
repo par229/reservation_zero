@@ -52,6 +52,9 @@ dependencies {
 	// sqlite
 	implementation 'org.xerial:sqlite-jdbc:3.41.2.1' // sqlite jdbc
 	implementation 'org.hibernate.orm:hibernate-community-dialects' // diarect
+
+	// utils 패키지에서 사용
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 tasks.named('test') {

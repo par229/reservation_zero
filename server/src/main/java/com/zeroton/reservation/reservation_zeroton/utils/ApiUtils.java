@@ -42,9 +42,15 @@ public class ApiUtils {
         @Override
         public String toString() {
             return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    <<<<<<<HEAD
                     .append("message", message)
                     .append("status", status)
                     .toString();
+=======
+                .append("message", message)
+                    .append("status", status)
+                    .toString();
+>>>>>>>d051c52([feat] utils, errors 패키지 리팩토링 완료)
         }
     }
 
