@@ -5,7 +5,7 @@ import com.zeroton.reservation.reservation_zeroton.email.util.JwtUtil;
 import com.zeroton.reservation.reservation_zeroton.email.util.RedisUtil;
 import com.zeroton.reservation.reservation_zeroton.errors.NotFoundException;
 import com.zeroton.reservation.reservation_zeroton.member.dto.*;
-import com.zeroton.reservation.reservation_zeroton.member.model.Member;
+import com.zeroton.reservation.reservation_zeroton.member.Model.Member;
 import com.zeroton.reservation.reservation_zeroton.email.service.AuthService;
 
 import com.zeroton.reservation.reservation_zeroton.member.repository.MemberRepository;
