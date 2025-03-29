@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -13,35 +12,19 @@ export default function RootLayout() {
         animation: 'slide_from_right',
       }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="login" 
-          options={{ 
-            title: "로그인",
-            headerShown: true,
-            headerBackTitle: "뒤로",
-          }} 
-        />
-        <Stack.Screen 
-          name="register" 
-          options={{ 
-            title: "회원가입",
-            headerShown: true,
-            headerBackTitle: "뒤로",
-          }} 
-        />
-        <Stack.Screen 
-          name="forgot-password" 
-          options={{ 
-            title: "비밀번호 찾기",
-            headerShown: true,
-            headerBackTitle: "뒤로",
-          }} 
-        />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen 
           name="(tabs)" 
           options={{ 
             headerShown: false,
-            gestureEnabled: false // 로그인 후 뒤로가기 방지
+            gestureEnabled: false
+          }} 
+        />
+        <Stack.Screen 
+          name="reservation" 
+          options={{ 
+            headerShown: false,
+            gestureEnabled: true
           }} 
         />
       </Stack>
