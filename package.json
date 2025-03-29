@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "expo-blur": "^14.0.3",
+    "expo-linear-gradient": "^14.0.2"
+  }
+}
