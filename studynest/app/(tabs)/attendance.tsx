@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // 출석 데이터 타입 정의
 interface AttendanceRecord {
@@ -100,7 +102,7 @@ export default function AttendanceScreen() {
       (record) => record.status === 'pending'
     ).length;
 
-    const presentRate = total > 0 ? Math.round((present / total) * 100) : 0;
+    const presentRate = total > 0 ? Math.round(((present + late) / total) * 100) : 0;
     
     return {
       total,
@@ -118,13 +120,13 @@ export default function AttendanceScreen() {
   const getStatusIcon = (status: AttendanceRecord['status']) => {
     switch (status) {
       case 'present':
-        return <Ionicons name="checkmark-circle" size={24} color="#2ecc71" />;
+        return <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />;
       case 'late':
-        return <Ionicons name="time" size={24} color="#f39c12" />;
+        return <Ionicons name="time" size={24} color="#FF9800" />;
       case 'absent':
-        return <Ionicons name="close-circle" size={24} color="#e74c3c" />;
+        return <Ionicons name="close-circle" size={24} color="#F44336" />;
       case 'pending':
-        return <Ionicons name="help-circle" size={24} color="#95a5a6" />;
+        return <Ionicons name="help-circle" size={24} color="#9E9E9E" />;
       default:
         return null;
     }
@@ -183,234 +185,360 @@ export default function AttendanceScreen() {
   };
 
   const renderAttendanceItem = ({ item }: { item: AttendanceRecord }) => (
-    <View style={styles.attendanceItem}>
-      <View style={styles.attendanceInfo}>
-        <Text style={styles.attendanceDate}>
-          {new Date(item.date).toLocaleDateString()}
+    <BlurView intensity={10} tint="light" style={styles.attendanceItem}>
+      <View style={styles.attendanceDate}>
+        <Text style={styles.dateDayText}>
+          {new Date(item.date).toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' })}
         </Text>
-        <Text style={styles.attendanceSubject}>{item.subject}</Text>
+      </View>
+      <View style={styles.attendanceContent}>
+        <Text style={styles.subjectText}>{item.subject}</Text>
         {item.seatId && (
-          <Text style={styles.attendanceSeat}>좌석: {item.seatId}</Text>
+          <Text style={styles.seatText}>좌석: {item.seatId}</Text>
         )}
       </View>
-      <View style={styles.attendanceStatus}>
+      <View style={[
+        styles.statusBadge, 
+        item.status === 'present' && styles.presentBadge,
+        item.status === 'late' && styles.lateBadge,
+        item.status === 'absent' && styles.absentBadge,
+        item.status === 'pending' && styles.pendingBadge,
+      ]}>
         {getStatusIcon(item.status)}
-        <Text
-          style={[
-            styles.attendanceStatusText,
-            item.status === 'present' && styles.presentText,
-            item.status === 'late' && styles.lateText,
-            item.status === 'absent' && styles.absentText,
-            item.status === 'pending' && styles.pendingText,
-          ]}
-        >
+        <Text style={[styles.statusText, 
+          item.status === 'present' && styles.presentText,
+          item.status === 'late' && styles.lateText,
+          item.status === 'absent' && styles.absentText,
+          item.status === 'pending' && styles.pendingText,
+        ]}>
           {getStatusText(item.status)}
         </Text>
       </View>
-    </View>
+    </BlurView>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>출석 확인</Text>
-      </View>
+    <LinearGradient
+      colors={['#f5f7fa', '#e4e8f0']}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <BlurView intensity={30} tint="light" style={styles.headerContainer}>
+          <Text style={styles.title}>출석 확인</Text>
+        </BlurView>
 
-      <View style={styles.statsContainer}>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{stats.total}</Text>
-          <Text style={styles.statLabel}>전체</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{stats.present}</Text>
-          <Text style={styles.statLabel}>출석</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{stats.late}</Text>
-          <Text style={styles.statLabel}>지각</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statValue}>{stats.absent}</Text>
-          <Text style={styles.statLabel}>결석</Text>
-        </View>
-      </View>
+        <BlurView intensity={15} tint="light" style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>{stats.total}</Text>
+            <Text style={styles.statLabel}>전체</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statValue, styles.presentValue]}>{stats.present}</Text>
+            <Text style={styles.statLabel}>출석</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statValue, styles.lateValue]}>{stats.late}</Text>
+            <Text style={styles.statLabel}>지각</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statValue, styles.absentValue]}>{stats.absent}</Text>
+            <Text style={styles.statLabel}>결석</Text>
+          </View>
+        </BlurView>
 
-      <View style={styles.attendanceRateContainer}>
-        <View style={styles.attendanceRate}>
-          <View
-            style={[
-              styles.attendanceRateBar,
-              { width: `${stats.presentRate}%` },
-            ]}
-          />
-        </View>
-        <Text style={styles.attendanceRateText}>
-          출석률: {stats.presentRate}%
-        </Text>
-      </View>
+        <BlurView intensity={15} tint="light" style={styles.attendanceRateContainer}>
+          <View style={styles.attendanceRate}>
+            <LinearGradient
+              colors={['#4CAF50', '#8BC34A']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={[
+                styles.attendanceRateBar,
+                { width: `${stats.presentRate}%` },
+              ]}
+            />
+          </View>
+          <Text style={styles.attendanceRateText}>
+            출석률: {stats.presentRate}%
+          </Text>
+        </BlurView>
 
-      <View style={styles.pendingAttendanceContainer}>
-        {attendanceData.some((record) => record.status === 'pending') ? (
-          <>
-            <Text style={styles.pendingAttendanceText}>
-              출석 대기 중인 수업이 있습니다
-            </Text>
+        <BlurView intensity={15} tint="light" style={styles.pendingAttendanceContainer}>
+          <Text style={styles.pendingAttendanceText}>
+            {attendanceData.some((record) => record.status === 'pending')
+              ? '출석 대기 중인 수업이 있습니다'
+              : '예약된 수업이 없습니다'}
+          </Text>
+          {attendanceData.some((record) => record.status === 'pending') && (
             <TouchableOpacity
               style={styles.checkInButton}
               onPress={handleCheckIn}
             >
-              <Text style={styles.checkInButtonText}>출석 체크인</Text>
+              <BlurView intensity={20} tint="light" style={styles.checkInButtonInner}>
+                <LinearGradient
+                  colors={['#4A86E8', '#3B75D9']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.checkInButtonGradient}
+                >
+                  <Text style={styles.checkInButtonText}>출석 체크인</Text>
+                </LinearGradient>
+              </BlurView>
             </TouchableOpacity>
-          </>
-        ) : (
-          <Text style={styles.pendingAttendanceText}>
-            예약된 수업이 없습니다
-          </Text>
-        )}
-      </View>
+          )}
+        </BlurView>
 
-      <Text style={styles.historyTitle}>출석 이력</Text>
+        <BlurView intensity={20} tint="light" style={styles.historyTitleContainer}>
+          <Text style={styles.historyTitle}>출석 이력</Text>
+        </BlurView>
 
-      <FlatList
-        data={attendanceData.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        )}
-        renderItem={renderAttendanceItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-      />
-    </SafeAreaView>
+        <FlatList
+          data={attendanceData.sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          )}
+          renderItem={renderAttendanceItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
-  header: {
-    padding: 15,
+  safeArea: {
+    flex: 1,
+  },
+  headerContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    padding: 16,
+    marginBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#333',
   },
   statsContainer: {
     flexDirection: 'row',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    marginHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   statItem: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   statValue: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#3498db',
+    color: '#4A86E8',
+    marginBottom: 4,
+  },
+  presentValue: {
+    color: '#4CAF50',
+  },
+  lateValue: {
+    color: '#FF9800',
+  },
+  absentValue: {
+    color: '#F44336',
   },
   statLabel: {
     fontSize: 14,
     color: '#666',
-    marginTop: 5,
   },
   attendanceRateContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    marginHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   attendanceRate: {
-    height: 20,
-    backgroundColor: '#f1f1f1',
-    borderRadius: 10,
+    height: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    borderRadius: 6,
     overflow: 'hidden',
+    marginBottom: 8,
   },
   attendanceRateBar: {
     height: '100%',
-    backgroundColor: '#2ecc71',
   },
   attendanceRateText: {
-    marginTop: 10,
     textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#555',
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
   },
   pendingAttendanceContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    marginHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   pendingAttendanceText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#666',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   checkInButton: {
-    backgroundColor: '#3498db',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    width: '80%',
+    height: 44,
+    borderRadius: 22,
+    overflow: 'hidden',
+  },
+  checkInButtonInner: {
+    flex: 1,
+    borderRadius: 22,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  checkInButtonGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   checkInButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  historyTitleContainer: {
+    marginHorizontal: 16,
+    marginBottom: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   historyTitle: {
-    padding: 15,
     fontSize: 18,
     fontWeight: 'bold',
-    backgroundColor: '#f9f9f9',
+    color: '#333',
+    textAlign: 'center',
   },
   listContainer: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   attendanceItem: {
     flexDirection: 'row',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  attendanceInfo: {
-    flex: 1,
+    marginBottom: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   attendanceDate: {
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRightWidth: 1,
+    borderRightColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  dateDayText: {
     fontSize: 14,
     color: '#666',
+    fontWeight: '600',
+    textAlign: 'center',
   },
-  attendanceSubject: {
+  attendanceContent: {
+    flex: 1,
+    padding: 12,
+  },
+  subjectText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginVertical: 5,
+    color: '#333',
+    marginBottom: 4,
   },
-  attendanceSeat: {
+  seatText: {
     fontSize: 14,
     color: '#666',
   },
-  attendanceStatus: {
+  statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(0, 0, 0, 0.05)',
   },
-  attendanceStatusText: {
-    marginLeft: 5,
+  presentBadge: {
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+  },
+  lateBadge: {
+    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+  },
+  absentBadge: {
+    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+  },
+  pendingBadge: {
+    backgroundColor: 'rgba(158, 158, 158, 0.1)',
+  },
+  statusText: {
     fontSize: 14,
     fontWeight: 'bold',
+    marginLeft: 4,
   },
   presentText: {
-    color: '#2ecc71',
+    color: '#4CAF50',
   },
   lateText: {
-    color: '#f39c12',
+    color: '#FF9800',
   },
   absentText: {
-    color: '#e74c3c',
+    color: '#F44336',
   },
   pendingText: {
-    color: '#95a5a6',
+    color: '#9E9E9E',
   },
 });
