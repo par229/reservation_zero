@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractUser
+import json
 
 # Create your models here.
 
@@ -45,16 +45,26 @@ class Lecture(models.Model):
     name = models.CharField(max_length=100)
 
 class ClassRoom(models.Model):
-    course_name = models.ForeignKey(Lecture, on_delete=models.CASCADE, related_name="live_info")
+    course_name = models.ForeignKey('Lecture', on_delete=models.CASCADE)
     classroom_location = models.CharField(max_length=100)
     class_time = models.DateTimeField()
     capacity = models.IntegerField()
     current_students = models.IntegerField()
-
-    current_space = ArrayField(models.BooleanField(default=False), blank=True, default=list)
+    current_space = models.TextField(blank=True, default='[]')  # JSON 문자열로 저장
 
     def save(self, *args, **kwargs):
-        # current_space를 capacity만큼의 False 배열로 설정
-        if not self.current_space:
-            self.current_space = [False] * self.capacity
-        super(ClassRoom, self).save(*args, **kwargs)
+        if isinstance(self.current_space, list):  # 리스트가 있으면 문자열로 직렬화
+            self.current_space = json.dumps(self.current_space)
+        super().save(*args, **kwargs)
+
+    def get_current_space(self):
+        return json.loads(self.current_space)  # JSON 문자열을 리스트로 역직렬화
+
+
+class Reservation(models.Model):
+    student_name = models.CharField(max_length=100)
+    classroom_location = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
+    seat_number = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.student_name} - {self.classroom_location.classroom_location} - Seat {self.seat_number}"
