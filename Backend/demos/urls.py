@@ -9,6 +9,6 @@ urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),  # JWT 로그인
     path("logout/", views.logout, name="logout"),
     path("addclass/", classroom.addclass, name="addclass"),
-    #path("deleteclass/", views.deleteclass, name="deleteclass"),
+    path("deleteclass/", classroom.deleteclass, name="deleteclass"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
