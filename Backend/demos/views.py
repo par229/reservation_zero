@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from demos.models import CustomUser
+from demos.models import CustomUser, Lecture
 from django.http import JsonResponse
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
