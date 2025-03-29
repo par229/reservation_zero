@@ -18,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import api from '../hooks/useApi';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,50 +27,45 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [focusedInput, setFocusedInput] = useState<string | null>(null);
-
+  const [focusedInput, setFocusedInput] = useState('');
   const handleLogin = async () => {
-    // 입력 값 검증
     if (!username.trim() || !password.trim()) {
-      Alert.alert('입력 오류', '학번과 비밀번호를 모두 입력해주세요.');
+      Alert.alert("입력 오류", "학번과 비밀번호를 모두 입력해주세요.");
       return;
     }
-
+  
     try {
       setIsLoading(true);
-
-      // 실제 API 호출 대신 임시 지연 추가 (로딩 상태 확인용)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // 임시 사용자 정보 생성
-      const userInfo = {
-        id: '1',
-        name: '홍길동',
-        studentId: username,
-        department: '컴퓨터공학과',
-        year: '3학년',
-      };
-
+  
+      // Django 서버로 로그인 요청
+      const response = await api.post("/login/", {
+        email: username,
+        password: password,
+      });
+  
+      // 응답 데이터
+      const { token, user } = response.data;
+  
       // AsyncStorage에 토큰 및 사용자 정보 저장
-      await AsyncStorage.setItem('auth_token', 'dummy_token_' + Date.now());
-      await AsyncStorage.setItem('user_info', JSON.stringify(userInfo));
-
+      await AsyncStorage.setItem("auth_token", token);
+      await AsyncStorage.setItem("user_info", JSON.stringify(user));
+  
       // 로그인 성공 후 탭 화면으로 이동
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     } catch (error) {
-      console.error('로그인 중 오류 발생:', error);
-      Alert.alert('로그인 오류', '로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+      //console.error("로그인 오류:", error.response?.data || error.message);
+      Alert.alert("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.");
     } finally {
       setIsLoading(false);
     }
-  };
+  }; // ✅ 여기서 닫아야 함
 
   const handleForgotPassword = () => {
-    router.push('/forgot-password');
+    //router.push('/forgot-password');
   };
 
   const handleRegister = () => {
-    router.push('/register');
+    //router.push('/register');
   };
 
   return (
@@ -95,14 +91,14 @@ export default function LoginScreen() {
             <Ionicons name="person-outline" size={22} color="#ffffff" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="학번"
+              placeholder="메일"
               placeholderTextColor="rgba(255, 255, 255, 0.6)"
               value={username}
               onChangeText={setUsername}
               autoCapitalize="none"
               editable={!isLoading}
               onFocus={() => setFocusedInput('username')}
-              onBlur={() => setFocusedInput(null)}
+              onBlur={() => setFocusedInput('')}
             />
           </View>
 
@@ -120,7 +116,7 @@ export default function LoginScreen() {
               onChangeText={setPassword}
               editable={!isLoading}
               onFocus={() => setFocusedInput('password')}
-              onBlur={() => setFocusedInput(null)}
+              onBlur={() => setFocusedInput('')}
             />
             <TouchableOpacity
               style={styles.passwordToggle}
