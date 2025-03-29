@@ -67,4 +67,8 @@ class Reservation(models.Model):
     seat_number = models.IntegerField()
 
     def __str__(self):
+<<<<<<< HEAD
         return f"{self.student_name} - {self.classroom_location.classroom_location} - Seat {self.seat_number}"
+=======
+        return f"{self.student_name} - {self.classroom_location.classroom_location} - Seat {self.seat_number}"
+>>>>>>> main

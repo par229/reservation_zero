@@ -1,7 +1,10 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views, lecture, classroom, reservation
+<<<<<<< HEAD
 from . import views, lecture, classroom, reservation
+=======
+>>>>>>> main
 
 app_name = "demos"
 
@@ -22,6 +25,9 @@ urlpatterns = [
     path("lecture/create/", lecture.create_lecture, name="create_lecture"),
     path("lecture/delete/", lecture.delete_lecture, name="delete_lecture"),
     path("lecture/find/", lecture.find_lecture, name="search_lecture"),
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]

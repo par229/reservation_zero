@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,visualstudiocode,macos,windows
 
@@ -342,5 +345,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,macos,windows
 node_modules
+=======
+# End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,macos,windows
+>>>>>>> main
