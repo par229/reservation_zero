@@ -51,10 +51,18 @@ class ClassRoom(models.Model):
     capacity = models.IntegerField()
     current_students = models.IntegerField()
 
-    current_space = ArrayField(models.BooleanField(default=False), blank=True, default=list)
+    current_space = ArrayField(models.CharField(max_length=100,default="False"), blank=True, default=list)
 
     def save(self, *args, **kwargs):
         # current_space를 capacity만큼의 False 배열로 설정
         if not self.current_space:
-            self.current_space = [False] * self.capacity
+            self.current_space = ["False"] * self.capacity
         super(ClassRoom, self).save(*args, **kwargs)
+
+class Reservation(models.Model):
+    student_name = models.CharField(max_length=100)
+    classroom_location = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
+    seat_number = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.student_name} - {self.classroom_location.classroom_location} - Seat {self.seat_number}"
