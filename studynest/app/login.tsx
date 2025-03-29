@@ -19,6 +19,7 @@ import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import api from '../hooks/useApi';
 =======
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,6 +27,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 =======
 import { LinearGradient } from 'expo-linear-gradient';
 >>>>>>> main
+=======
+import { LinearGradient } from 'expo-linear-gradient';
+import api from '../hooks/useApi';
+>>>>>>> origin/django-backend
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,10 +41,14 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
 >>>>>>> 6e0c19fb7a753e1511ec06cd62280fe5b3ac12ef
+=======
+  const [focusedInput, setFocusedInput] = useState('');
+>>>>>>> origin/django-backend
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
       Alert.alert("입력 오류", "학번과 비밀번호를 모두 입력해주세요.");
@@ -149,7 +158,7 @@ export default function LoginScreen() {
               autoCapitalize="none"
               editable={!isLoading}
               onFocus={() => setFocusedInput('username')}
-              onBlur={() => setFocusedInput(null)}
+              onBlur={() => setFocusedInput('')}
             />
           </View>
 
@@ -167,7 +176,7 @@ export default function LoginScreen() {
               onChangeText={setPassword}
               editable={!isLoading}
               onFocus={() => setFocusedInput('password')}
-              onBlur={() => setFocusedInput(null)}
+              onBlur={() => setFocusedInput('')}
             />
             <TouchableOpacity
               style={styles.passwordToggle}
