@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate
 from demos.models import CustomUser
-from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
@@ -61,8 +60,3 @@ def signup(request):
             'refresh': str(refresh)
         })
     return JsonResponse({'status': 405, 'error': 'Method not allowed'}, status=405)
-
-'''@csrf_exempt
-def addclass(request):
-    if request.method == 'POST':
-        data.'''
