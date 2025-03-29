@@ -1,27 +1,44 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { COLORS } from '../styles/common';
+import { COLORS, FONTS, SPACING, commonStyles } from '../styles/common';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 60,
+          bottom: Platform.OS === 'ios' ? 24 : 16,
+          left: 16,
+          right: 16,
+          height: 64,
           backgroundColor: 'transparent',
           borderTopWidth: 0,
           elevation: 0,
+          borderRadius: 20,
+          paddingVertical: 0,
+          ...Platform.select({
+            ios: {
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.1,
+              shadowRadius: 12,
+            },
+            android: {
+              elevation: 8,
+            },
+          }),
         },
         tabBarBackground: () => (
           <BlurView
-            intensity={90}
+            intensity={80}
             tint="light"
             style={{
               position: 'absolute',
@@ -29,17 +46,17 @@ export default function TabLayout() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              borderTopWidth: 1,
-              borderTopColor: 'rgba(255, 255, 255, 0.2)',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              borderRadius: 20,
+              overflow: 'hidden',
             }}
           />
         ),
-        tabBarActiveTintColor: COLORS.text.primary,
-        tabBarInactiveTintColor: COLORS.text.secondary,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: 'rgba(0, 0, 0, 0.4)',
+        tabBarItemStyle: {
+          height: 64,
+          justifyContent: 'center',
         },
       }}
     >
@@ -50,14 +67,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused, color }) => (
             <View
               style={{
-                backgroundColor: focused ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                padding: 8,
-                borderRadius: 12,
-                borderWidth: focused ? 1 : 0,
-                borderColor: 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: focused ? `${COLORS.primary}15` : 'transparent',
+                padding: 12,
+                borderRadius: 16,
+                transform: [{ scale: focused ? 1.1 : 1 }],
               }}
             >
-              <Ionicons name="grid-outline" size={22} color={color} />
+              <Ionicons name={focused ? "grid" : "grid-outline"} size={26} color={color} />
             </View>
           ),
         }}
@@ -69,14 +85,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused, color }) => (
             <View
               style={{
-                backgroundColor: focused ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                padding: 8,
-                borderRadius: 12,
-                borderWidth: focused ? 1 : 0,
-                borderColor: 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: focused ? `${COLORS.primary}15` : 'transparent',
+                padding: 12,
+                borderRadius: 16,
+                transform: [{ scale: focused ? 1.1 : 1 }],
               }}
             >
-              <Ionicons name="checkmark-circle-outline" size={22} color={color} />
+              <Ionicons name={focused ? "checkmark-circle" : "checkmark-circle-outline"} size={26} color={color} />
             </View>
           ),
         }}
@@ -88,14 +103,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused, color }) => (
             <View
               style={{
-                backgroundColor: focused ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                padding: 8,
-                borderRadius: 12,
-                borderWidth: focused ? 1 : 0,
-                borderColor: 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: focused ? `${COLORS.primary}15` : 'transparent',
+                padding: 12,
+                borderRadius: 16,
+                transform: [{ scale: focused ? 1.1 : 1 }],
               }}
             >
-              <Ionicons name="chatbubble-outline" size={22} color={color} />
+              <Ionicons name={focused ? "chatbubble" : "chatbubble-outline"} size={26} color={color} />
             </View>
           ),
         }}
@@ -107,14 +121,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused, color }) => (
             <View
               style={{
-                backgroundColor: focused ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                padding: 8,
-                borderRadius: 12,
-                borderWidth: focused ? 1 : 0,
-                borderColor: 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: focused ? `${COLORS.primary}15` : 'transparent',
+                padding: 12,
+                borderRadius: 16,
+                transform: [{ scale: focused ? 1.1 : 1 }],
               }}
             >
-              <Ionicons name="person-outline" size={22} color={color} />
+              <Ionicons name={focused ? "person" : "person-outline"} size={26} color={color} />
             </View>
           ),
         }}
