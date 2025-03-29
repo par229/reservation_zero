@@ -101,9 +101,6 @@ def updateclass(request):
                 classroom.classroom_location = classroom_location
             if class_time:
                 classroom.class_time = class_time
-            if capacity is not None:
-                classroom.capacity = capacity
-                classroom.current_space = [False] * capacity  # capacity에 맞춰 current_space 배열 업데이트
             if current_students is not None:
                 classroom.current_students = current_students
             
