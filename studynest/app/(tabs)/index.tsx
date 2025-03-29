@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import api from '../../hooks/useApi';
 
 interface ClassItem {
   id: number;
@@ -19,45 +20,28 @@ interface SeatType {
   status: 'available' | 'reserved' | 'selected' | 'disabled';
 }
 
-const classes: ClassItem[] = [
-  { id: 1, name: '데이터베이스 설계', professor: '김교수', time: '09:00 - 11:00', location: '공학관 401호', days: '월, 수', capacity: 30 },
-  { id: 2, name: '프로그래밍 기초', professor: '이교수', time: '13:00 - 15:00', location: '공학관 302호', days: '화, 목', capacity: 20 },
-  { id: 3, name: '알고리즘', professor: '박교수', time: '15:30 - 17:30', location: '공학관 305호', days: '월, 금', capacity: 25 },
-];
-
 export default function IndexScreen() {
+  const [classes, setClasses] = useState<ClassItem[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassItem | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [seats, setSeats] = useState<SeatType[]>([]);
   const [selectedSeat, setSelectedSeat] = useState<SeatType | null>(null);
 
-  const totalSeats = 50;
+  // 📌 강의실 목록 불러오기
+  useEffect(() => {
+    api.get('/getallclasses')
+      .then(response => setClasses(response.data))
+      .catch(error => console.error('Error fetching classes:', error));
+  }, []);
 
-  const generateSeats = (capacity: number): SeatType[] => {
-    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    const cols = 5;
-    const seats: SeatType[] = [];
-    let seatIndex = 0;
-
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      for (let col = 1; col <= cols; col++) {
-        seatIndex++;
-        const isDisabled = seatIndex > capacity;
-        seats.push({
-          id: seatIndex,
-          row: rows[rowIndex],
-          col,
-          status: isDisabled ? 'disabled' : 'available',
-        });
-      }
-    }
-    return seats;
-  };
-
+  // 📌 특정 강의실 선택 시 좌석 정보 가져오기
   const handleClassSelect = (classItem: ClassItem) => {
     setSelectedClass(classItem);
-    setSeats(generateSeats(classItem.capacity));
     setModalVisible(true);
+
+    api.get('/getclass', { params: { classroom_id: selectedClass } })
+      .then(response => setSeats(response.data))
+      .catch(error => console.error('Error fetching seats:', error));
   };
 
   const closeModal = () => {
@@ -70,33 +54,39 @@ export default function IndexScreen() {
     if (seat.status === 'reserved' || seat.status === 'disabled') return;
 
     setSeats(prevSeats =>
-      prevSeats.map(s => {
-        if (s.id === seat.id) {
-          const newStatus = s.status === 'selected' ? 'available' : 'selected';
-          setSelectedSeat(newStatus === 'selected' ? seat : null);
-          return { ...s, status: newStatus };
-        }
-        return { ...s, status: s.status === 'selected' ? 'available' : s.status };
-      })
-    );
-  };
-
-  const handleReservation = () => {
-    if (!selectedSeat) return;
-
-    setSeats(prevSeats =>
       prevSeats.map(s =>
-        s.id === selectedSeat.id ? { ...s, status: 'reserved' } : s
+        s.id === seat.id
+          ? { ...s, status: s.status === 'selected' ? 'available' : 'selected' }
+          : s
       )
     );
-    setSelectedSeat(null);
-    setModalVisible(false);
+
+    setSelectedSeat(seat.status === 'selected' ? null : seat);
+  };
+
+  // 📌 좌석 예약 요청
+  const handleReservation = () => {
+    if (!selectedSeat || !selectedClass) return;
+
+    api.post('/reservations', {
+      classroom_location: selectedClass.location,
+      seat: selectedSeat.id,
+      name: '홍길동', // 유저 이름 (로그인 기능이 있다면 변경)
+    })
+      .then(() => {
+        Alert.alert('예약 성공', '좌석이 예약되었습니다.');
+        setModalVisible(false);
+      })
+      .catch(error => {
+        Alert.alert('예약 실패', '좌석 예약 중 오류가 발생했습니다.');
+        console.error('Error reserving seat:', error);
+      });
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {classes.map((classItem) => (
+        {classes.map(classItem => (
           <TouchableOpacity
             key={classItem.id}
             onPress={() => handleClassSelect(classItem)}
@@ -109,6 +99,7 @@ export default function IndexScreen() {
         ))}
       </ScrollView>
 
+      {/* 📌 모달 창 (좌석 선택) */}
       <Modal
         visible={modalVisible}
         animationType="slide"
@@ -119,7 +110,7 @@ export default function IndexScreen() {
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{selectedClass?.name}</Text>
             <View style={styles.seatGrid}>
-              {seats.map((seat) => (
+              {seats.map(seat => (
                 <TouchableOpacity
                   key={seat.id}
                   onPress={() => handleSeatPress(seat)}

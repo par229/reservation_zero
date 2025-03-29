@@ -18,11 +18,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import api from '../hooks/useApi';
 
 const { width, height } = Dimensions.get('window');
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState('');
+  const [email, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     // 입력 값 검증
-    if (!username.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       Alert.alert('입력 오류', '학번과 비밀번호를 모두 입력해주세요.');
       return;
     }
@@ -38,21 +39,16 @@ export default function LoginScreen() {
     try {
       setIsLoading(true);
 
-      // 실제 API 호출 대신 임시 지연 추가 (로딩 상태 확인용)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await api.post("/login/", {
+        email: email,
+        password: password,
+      });
 
-      // 임시 사용자 정보 생성
-      const userInfo = {
-        id: '1',
-        name: '홍길동',
-        studentId: username,
-        department: '컴퓨터공학과',
-        year: '3학년',
-      };
+      const { token, user } = response.data;
 
       // AsyncStorage에 토큰 및 사용자 정보 저장
       await AsyncStorage.setItem('auth_token', 'dummy_token_' + Date.now());
-      await AsyncStorage.setItem('user_info', JSON.stringify(userInfo));
+      await AsyncStorage.setItem('user_info', JSON.stringify(user));
 
       // 로그인 성공 후 탭 화면으로 이동
       router.replace('/(tabs)');
@@ -65,11 +61,11 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    router.push('/forgot-password');
+    //router.push('/forgot-password');
   };
 
   const handleRegister = () => {
-    router.push('/register');
+    //router.push('/register');
   };
 
   return (
@@ -95,9 +91,9 @@ export default function LoginScreen() {
             <Ionicons name="person-outline" size={22} color="#ffffff" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="학번"
+              placeholder="이메일"
               placeholderTextColor="rgba(255, 255, 255, 0.6)"
-              value={username}
+              value={email}
               onChangeText={setUsername}
               autoCapitalize="none"
               editable={!isLoading}
